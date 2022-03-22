@@ -56,8 +56,8 @@ numerical_df_application_data = numerical_df(df_application_data_2)
 
 # Outlier removing function
 def outlier_removal(df, numerical_only_df):
-    Q1 = numerical_only_df.quantile(0.25)
-    Q3 = numerical_only_df.quantile(0.75)
+    Q1 = df.quantile(0.25)
+    Q3 = df.quantile(0.75)
     IQR = Q3 - Q1
 
     df = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
