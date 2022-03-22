@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-03-22T05:57:50.170Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36" etag="dyInk5WcKB0S4F3oFNzQ" version="16.6.6" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-22T05:58:23.753Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36" etag="yHo-Wu7Wp7Yh6xK2iiTQ" version="16.6.6" type="github">
   <diagram id="8NTqn93gWnW2YLTQEPx9" name="Page-1">
     <mxGraphModel dx="1422" dy="1862" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -223,6 +223,9 @@
             <mxPoint x="290" y="340" as="sourcePoint" />
             <mxPoint x="340" y="290" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="A3XrzvGRtBCsT0RXqucP-88" value="S3 multipart upload" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="A3XrzvGRtBCsT0RXqucP-65">
+          <mxGeometry x="620" y="30" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="A3XrzvGRtBCsT0RXqucP-70" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="WtAKPwelO9aeJDnpv6He-4">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
