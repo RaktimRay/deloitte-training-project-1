@@ -29,7 +29,8 @@ df_previous_application_2 = NAN_value_replacement(df_previous_application_2)
     
 # Boxplot
 def Boxplot(dataframe, column):
-    fig= plt.figure(figsize=(10,7))
+    plt.figure(figsize=(10,7))
+    plt.title(column)
     plt.boxplot(dataframe[column])
     plt.show()
 
@@ -59,7 +60,7 @@ def outlier_removal(df, numerical_only_df):
     Q3 = numerical_only_df.quantile(0.75)
     IQR = Q3 - Q1
 
-    df = df[~((numerical_only_df < (Q1 - 1.5 * IQR)) | (numerical_only_df > (Q3 + 1.5 * IQR))).any(axis=1)]
+    df = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
     return df
 
 # Removing outliers
