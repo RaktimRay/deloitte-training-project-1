@@ -15,7 +15,6 @@ acceptable_non_NAN_values_fraction = 0.5
 df_application_data_2 = df_application_data.dropna(axis='columns', how="any", thresh=(1-acceptable_non_NAN_values_fraction)*len(df_application_data.index))
 df_previous_application_2 = df_previous_application.dropna(axis='columns', how="any", thresh=(1-acceptable_non_NAN_values_fraction)*len(df_previous_application.index))
 
-
 # NAN value replacement
 def NAN_value_replacement(dataframe):
     for col in dataframe:
