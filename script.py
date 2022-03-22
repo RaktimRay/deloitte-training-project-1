@@ -53,4 +53,14 @@ df_previous_application_2[(df_previous_application_2.ad_amt_credit_ct < lowerbou
 df_previous_application_2.drop(df_previous_application_2[ (df_previous_application_2.ad_amt_credit_ct > upperbound) | (df_previous_application_2.ad_amt_credit_ct < lowerbound) ].index , inplace=True)
 
 print(df_previous_application_2.describe())
+
+# Boxplot outlier removed
+# df_application_data_2.boxplot(column="ad_amt_income_total_ct")
+fig= plt.figure(figsize=(10,7)) 
+# Creating plot
+plt.boxplot(df_previous_application_2["ad_amt_credit_ct"])
+# show plot
+plt.show()
+
+
 #shown for previous application_data.csv file, same can be done for the other csv file following the same steps
