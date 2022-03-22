@@ -44,24 +44,24 @@ print(df_previous_application_2.shape)
 print("Shape with outlier - application_data.csv")
 print(df_application_data_2.shape)
 
+# EDIT: might not need numerical dataframe
 # Getting numerical only Dataframe from full Dataframe
 def numerical_df(df):
     numerical = df.select_dtypes(exclude='object')
     return numerical
-
 # gettting numerical dfs
 numerical_df_previous_application = numerical_df(df_previous_application_2)
 numerical_df_application_data = numerical_df(df_application_data_2)
 
 
 # Outlier removing function
-def outlier_removal(df, numerical_only_df):
+def outlier_removal(df, numerical_only_df): # Passing extra argument just for testing purpose so less code changes required later
     Q1 = df.quantile(0.25)
     Q3 = df.quantile(0.75)
     IQR = Q3 - Q1
 
-    df = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
-    return df
+    df_final = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
+    return df_final
 
 # Removing outliers
 df_previous_application_2 = outlier_removal(df_previous_application_2, numerical_df_previous_application)
