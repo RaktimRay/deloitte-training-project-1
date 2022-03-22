@@ -48,6 +48,7 @@ def outlier_treatment(datacolumn):
  upper_range = Q3 + (1.5 * IQR)
  return lower_range,upper_range
 
+# previous application
 lowerbound,upperbound = outlier_treatment(df_previous_application_2.ad_amt_credit_ct)
 # check outlier for selected column
 df_previous_application_2[(df_previous_application_2.ad_amt_credit_ct < lowerbound) | (df_previous_application_2.ad_amt_credit_ct > upperbound)]
@@ -55,7 +56,7 @@ df_previous_application_2[(df_previous_application_2.ad_amt_credit_ct < lowerbou
 df_previous_application_2.drop(df_previous_application_2[ (df_previous_application_2.ad_amt_credit_ct > upperbound) | (df_previous_application_2.ad_amt_credit_ct < lowerbound) ].index , inplace=True)
 print(df_previous_application_2.describe())
 
-#current application
+# current application
 lowerbound,upperbound = outlier_treatment(df_application_data_2.ad_amt_credit_ct)
 # check outlier for selected column
 df_application_data_2[(df_application_data_2.ad_amt_credit_ct < lowerbound) | (df_application_data_2.ad_amt_credit_ct > upperbound)]
