@@ -37,22 +37,34 @@ def Boxplot(dataframe, column):
 Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
 Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
 
+# Getting numerical only Dataframe from full Dataframe
+def numerical_df(df):
+    numerical = df.select_dtypes(exclude='object')
+    return numerical
+
+# gettting numerical dfs
+numerical_df_previous_application = numerical_df(df_previous_application_2)
+numerical_df_application_data = numerical_df(df_application_data_2)
+
+
 # Outlier removing function
-def outlier_removal(df):
-    Q1 = df.quantile(0.25)
-    Q3 = df.quantile(0.75)
+def outlier_removal(df, numerical_only_df):
+    Q1 = numerical_only_df.quantile(0.25)
+    Q3 = numerical_only_df.quantile(0.75)
     IQR = Q3 - Q1
 
-    df = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
+    df = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
     return df
 
 # Removing outliers
-df_previous_application_2 = outlier_removal(df_previous_application_2)
-df_application_data_2 = outlier_removal(df_application_data_2)
+df_previous_application_2 = outlier_removal(df_previous_application_2, numerical_df_previous_application)
+df_application_data_2 = outlier_removal(df_application_data_2, numerical_df_application_data)
 
 # show modified dataframes with outliers removed
 print(df_previous_application_2.describe())
+print(df_previous_application_2.shape)
 print(df_application_data_2.describe())
+print(df_application_data_2.shape)
 
 # Boxplot outlier removed
 Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
