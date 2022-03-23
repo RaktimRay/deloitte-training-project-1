@@ -35,8 +35,8 @@ def Boxplot(dataframe, column):
     plt.show()
 
 # Initial Boxplot
-Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
-Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
+# Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
+# Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
 
 # Initial Shape
 print("Shape with outlier - previous_application.csv")
@@ -74,5 +74,5 @@ print("Shape without outlier - application_data.csv")
 print(df_application_data_2.shape)
 
 # Boxplot outlier removed
-Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
-Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
+# Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
+# Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
