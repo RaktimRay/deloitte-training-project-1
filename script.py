@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
-from skfeature.function.similarity_based import fisher_score
+# from skfeature.function.similarity_based import fisher_score
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -13,20 +13,11 @@ df_application_data = pd.DataFrame(data)
 data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Code/deloitte-training-project-1/datasets/previous_application.csv")
 df_previous_application = pd.DataFrame(data)
 
-# print("Shape Original - previous_application.csv")
-# print(df_previous_application.shape)
-# print("Shape Original - application_data.csv")
-# print(df_application_data.shape)
-
 # Missing value removal
 acceptable_non_NAN_values_fraction = 0.5
 df_application_data_2 = df_application_data.dropna(axis='columns', how="any", thresh=(1-acceptable_non_NAN_values_fraction)*len(df_application_data.index))
 df_previous_application_2 = df_previous_application.dropna(axis='columns', how="any", thresh=(1-acceptable_non_NAN_values_fraction)*len(df_previous_application.index))
 
-# print("Shape after dropping - previous_application.csv")
-# print(df_previous_application_2.shape)
-# print("Shape after dropping - application_data.csv")
-# print(df_application_data_2.shape)
 
 # Shapiro test
 
@@ -41,11 +32,6 @@ def NAN_value_replacement(dataframe):
 
 df_application_data_2 = NAN_value_replacement(df_application_data_2)
 df_previous_application_2 = NAN_value_replacement(df_previous_application_2)
-
-# print("Shape after NAN value replacement - previous_application.csv")
-# print(df_previous_application_2.shape)
-# print("Shape after NAN value replacement - application_data.csv")
-# print(df_application_data_2.shape)
     
 # Boxplot
 def Boxplot(dataframe, column):
@@ -54,11 +40,6 @@ def Boxplot(dataframe, column):
     plt.boxplot(dataframe[column])
     plt.show()
 
-# Initial Boxplot
-# Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
-# Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
-
-# EDIT: might not need numerical dataframe
 # Getting numerical only Dataframe from full Dataframe
 def numerical_df(df):
     numerical = df.select_dtypes(exclude='object')
@@ -74,32 +55,12 @@ def outlier_removal(df, numerical_only_df): # Passing extra argument just for te
     Q3 = df.quantile(0.75)
     IQR = Q3 - Q1
 
-    df_final = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
+    df_final = df[~((numerical_only_df < (Q1 - 1.5 * IQR)) | (numerical_only_df > (Q3 + 1.5 * IQR))).any(axis=1)]
     return df_final
 
 # Removing outliers
 df_previous_application_2 = outlier_removal(df_previous_application_2, numerical_df_previous_application)
 df_application_data_2 = outlier_removal(df_application_data_2, numerical_df_application_data)
-
-# Final Shape
-# print("Shape without outlier - previous_application.csv")
-# print(df_previous_application_2.shape)
-# print("Shape without outlier - application_data.csv")
-# print(df_application_data_2.shape)
-
-# Boxplot outlier removed
-# Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
-# Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
-
-# printing column
-# print(abs(df_previous_application_2["ad_days_decision_ct"].head(10)))
-# print(abs(df_previous_application_2["ad_days_decision_ct"].max()))
-# print(abs(df_previous_application_2["ad_days_decision_ct"].min()))
-
-# printing numerical columns
-# print("previous_application numerical columns are:")
-# for col in numerical_df_previous_application.columns:
-#     print(col)
 
 # numerical to categorical
 df_previous_application_2["ad_MONTHS_decision_ct"] = abs(df_previous_application_2["ad_days_decision_ct"])/30
@@ -112,13 +73,6 @@ bins = [0,10,20,30,40,50,60,70,80,90,np.inf]
 slots = ["0-10","11-20","21-30","31-40","41-50","51-60","61-70","71-80","81-90","Above 90"]
 df_application_data_2["ad_YEARS_birth_ct"] = pd.cut(df_application_data_2["ad_YEARS_birth_ct"], bins=bins, labels=slots)
 
-
-# print(df_previous_application_2["ad_name_contract_status_ct"].value_counts())
-# print("\nDtypes previous:\n")
-# print(df_previous_application_2.dtypes)
-# print("\nDtypes application:\n")
-# print(df_application_data_2.dtypes)
-
 # Encoding
 def encoder(dataframe):
     label_encoder = preprocessing.LabelEncoder()
@@ -127,17 +81,12 @@ def encoder(dataframe):
             # print(dataframe[columnName].dtypes)
             dataframe[columnName] = label_encoder.fit_transform(dataframe[columnName])
     return dataframe
-    # dataframe[column]= label_encoder.fit_transform(dataframe[column])
-    # print(dataframe[column].value_counts())
 
-# print(df_previous_application_2["ad_name_contract_status_ct"].dtypes)
 df_previous_application_2 = encoder(df_previous_application_2)
 df_application_data_2 = encoder(df_application_data_2)
-# print(df_previous_application_2.dtypes)
 
 # Feature Selection - Correleation Coefficient
 def corr_co(name, dataframe, thresh, plot_visibility):
-    # print("\nThis is correlation coefficient function for "+name)
     corr_matrix = dataframe.corr()
     if (plot_visibility):
         sns.heatmap(corr_matrix,annot=True,cmap=plt.cm.CMRmap_r)
@@ -146,62 +95,54 @@ def corr_co(name, dataframe, thresh, plot_visibility):
     coll_corr = []
     threshold = thresh
 
-    # print("\nColumn names:\n")
-
-    flag = False
+    flag = 0
 
     for i in range(len(corr_matrix.columns)):
         for j in range(i):
             if abs(corr_matrix.iloc[i,j]) > threshold:
                 colname = corr_matrix.columns[i]
-                # coll_corr.append(colname)
-                if flag == True:
+                if colname not in coll_corr and flag > 0:
                     coll_corr.append(colname)
-                flag == True
-                # print(colname)
-    return corr_matrix
+                    # print(colname)
+                flag+=1
+    # print ("\n\n")
+    return coll_corr
 
 # calling correlation coefficient function
 corr_matrix_previous_application = corr_co("previous_application.csv", df_previous_application_2, 0.85, False)
 corr_matrix_application_data = corr_co("current_application", df_application_data_2, 0.85, False)
 
-# print("\nprevious application\n")
-# print(corr_matrix_previous_application.dtypes)
-# print(corr_matrix_previous_application.shape)
+# print("\nlist of columns in previous_application dataframe\n")
+# print(list(df_previous_application_2.columns))
+# print("\nlist of columns to be dropped from previous_application dataframe\n")
+# print(corr_matrix_previous_application)
+# print("\n\n")
 
-# print("\napplication data\n")
-# print(corr_matrix_application_data.dtypes)
-# print(corr_matrix_application_data.shape)
+# drop the columns obtained from coefficient function
+df_previous_application_2_dropped = df_previous_application_2.drop(labels=corr_matrix_previous_application, inplace=False, axis=1)
+df_application_data_2_dropped = df_application_data_2.drop(labels=corr_matrix_application_data, inplace=False, axis=1)
 
-# if 'ad_target_ct' in corr_matrix_application_data.columns:
-#     print("YES")
-# else:
-#     print("NO")
+# print("Shape before dropping:")
+# print("previous_application.csv: ")
+# print(df_previous_application_2.shape)
+# print("current_application.csv: ")
+# print(df_application_data_2.shape)
 
-# Pearson method correlation
-# df_corr = df_previous_application_2.corr(method ='pearson')
-# print(df_corr)
+# print("Shape after dropping:")
+# print("previous_application.csv: ")
+# print(df_previous_application_2_dropped.shape)
+# print("current_application.csv: ")
+# print(df_application_data_2_dropped.shape)
 
 # merge
-# merge both the dataframe on SK_ID_CURR with Inner Joins
 merged_dataframe = pd.merge(df_application_data_2, df_previous_application_2, how='inner', on='ad_sk_id_curr_ct')
 merged_dataframe.to_csv('raktim_cleaned_data_set_23_03_2022.csv')
-print("to csv done!")
-# print("\nmerged data:\n")
-# print(merged_dataframe.head())
-
-
-
-
-
-
-
 
 # sample
 def data_type(dataset,col):
     if dataset[col].dtype == np.int64 or dataset[col].dtype == np.float64:
         return "numerical"
-    if dataset[col].dtype == "category":
+    if dataset[col].dtype.name == "category":
         return "categorical"
 
 def univariate(dataset,col,target_col,ylog=False,x_label_angle=False,h_layout=True):
@@ -258,15 +199,32 @@ def univariate(dataset,col,target_col,ylog=False,x_label_angle=False,h_layout=Tr
         
         plt.show()
 
-univariate(df_application_data_2, "ad_code_gender_ct", "ad_target_ct")
+univariate(df_application_data_2_dropped, "ad_code_gender_ct", "ad_target_ct")
 
-# Insight Table
-insight_table_1 = df_application_data_2[["ad_sk_id_curr_ct", "ad_target_ct", "ad_name_education_type_ct"]]
-print("\nInsight Table - 1: Education Type\n")
-print(insight_table_1.head())
-insight_table_2 = df_application_data_2[["ad_sk_id_curr_ct", "ad_target_ct", "ad_name_housing_type_ct"]]
-print("\nInsight Table - 1: Housing Type\n")
-print(insight_table_2.head())
-insight_table_3 = df_application_data_2[["ad_sk_id_curr_ct", "ad_target_ct", "ad_occupation_type_ct"]]
-print("\nInsight Table - 1: Occupation Type\n")
-print(insight_table_3.head())
+# Insight Tables
+insight_df_1 = df_application_data_2[["ad_sk_id_curr_ct", "ad_target_ct", "ad_name_education_type_ct"]]
+print("\nInsight dataframe - 1: Education Type\n")
+print(insight_df_1.head())
+col = 'ad_name_education_type_ct'
+target_col = 'ad_target_ct'
+sns.set()
+s = sns.countplot(insight_df_1[col],hue=insight_df_1[target_col])
+
+insight_df_2 = df_application_data_2[["ad_sk_id_curr_ct", "ad_target_ct", "ad_name_housing_type_ct"]]
+print("\nInsight dataframe - 2: Housing Type\n")
+print(insight_df_2.head())
+col = 'ad_name_housing_type_ct'
+target_col = 'ad_target_ct'
+sns.set()
+s = sns.countplot(insight_df_2[col],hue=insight_df_2[target_col])
+
+insight_df_3 = df_application_data_2[["ad_sk_id_curr_ct", "ad_target_ct", "ad_occupation_type_ct"]]
+print("\nInsight dataframe - 3: Occupation Type\n")
+print(insight_df_3.head())
+col = 'ad_occupation_type_ct'
+target_col = 'ad_target_ct'
+sns.set()
+s = sns.countplot(insight_df_3[col],hue=insight_df_3[target_col])
+
+
+
