@@ -25,3 +25,7 @@ df['NAME_INCOME_TYPE'].value_counts()
 
 5. Correlation method
 ad_name_contract_status_ct
+
+# merge both the dataframe on SK_ID_CURR with Inner Joins
+loan_df = pd.merge(appl_data, prev_appl, how='inner', on='SK_ID_CURR')
+loan_df.head()
