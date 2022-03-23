@@ -5,15 +5,27 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Day_2/AWS_architecture/deloitee-training-project-1/datasets/application_data.csv")
+data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Code/deloitee-training-project-1/datasets/application_data.csv")
 df_application_data = pd.DataFrame(data)
-data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Day_2/AWS_architecture/deloitee-training-project-1/datasets/previous_application.csv")
+data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Code/deloitee-training-project-1/datasets/previous_application.csv")
 df_previous_application = pd.DataFrame(data)
+
+print("Shape Original - previous_application.csv")
+print(df_previous_application.shape)
+print("Shape Original - application_data.csv")
+print(df_application_data.shape)
 
 # Missing value removal
 acceptable_non_NAN_values_fraction = 0.5
 df_application_data_2 = df_application_data.dropna(axis='columns', how="any", thresh=(1-acceptable_non_NAN_values_fraction)*len(df_application_data.index))
 df_previous_application_2 = df_previous_application.dropna(axis='columns', how="any", thresh=(1-acceptable_non_NAN_values_fraction)*len(df_previous_application.index))
+
+print("Shape after dropping - previous_application.csv")
+print(df_previous_application_2.shape)
+print("Shape after dropping - application_data.csv")
+print(df_application_data_2.shape)
+
+# Shapiro test
 
 # NAN value replacement
 def NAN_value_replacement(dataframe):
@@ -26,6 +38,11 @@ def NAN_value_replacement(dataframe):
 
 df_application_data_2 = NAN_value_replacement(df_application_data_2)
 df_previous_application_2 = NAN_value_replacement(df_previous_application_2)
+
+print("Shape after NAN value replacement - previous_application.csv")
+print(df_previous_application_2.shape)
+print("Shape after NAN value replacement - application_data.csv")
+print(df_application_data_2.shape)
     
 # Boxplot
 def Boxplot(dataframe, column):
@@ -37,12 +54,6 @@ def Boxplot(dataframe, column):
 # Initial Boxplot
 # Boxplot(df_application_data_2, "ad_amt_credit_ct") #current data
 # Boxplot(df_previous_application_2, "ad_amt_credit_ct") #previous data
-
-# Initial Shape
-print("Shape with outlier - previous_application.csv")
-print(df_previous_application_2.shape)
-print("Shape with outlier - application_data.csv")
-print(df_application_data_2.shape)
 
 # EDIT: might not need numerical dataframe
 # Getting numerical only Dataframe from full Dataframe

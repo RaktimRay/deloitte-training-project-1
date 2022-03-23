@@ -1,1 +1,4 @@
-Shapiro test
+Shapiro test:
+
+Outlier:
+value_count()
