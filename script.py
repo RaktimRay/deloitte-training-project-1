@@ -107,20 +107,37 @@ bins = [0,1,2,3,4,5,6,7,8,9,np.inf]
 slots = ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9","Above 9"]
 df_previous_application_2["ad_MONTHS_decision_ct"] = pd.cut(df_previous_application_2["ad_MONTHS_decision_ct"], bins=bins, labels=slots)
 
+df_application_data_2["ad_YEARS_birth_ct"] = abs(df_application_data_2["ad_days_birth_ct"])/365
+bins = [0,10,20,30,40,50,60,70,80,90,np.inf]
+slots = ["0-10","11-20","21-30","31-40","41-50","51-60","61-70","71-80","81-90","Above 90"]
+df_application_data_2["ad_YEARS_birth_ct"] = pd.cut(df_application_data_2["ad_YEARS_birth_ct"], bins=bins, labels=slots)
+
 
 # print(df_previous_application_2["ad_name_contract_status_ct"].value_counts())
+# print("\nDtypes previous:\n")
+# print(df_previous_application_2.dtypes)
+# print("\nDtypes application:\n")
+# print(df_application_data_2.dtypes)
 
 # Encoding
-def encoder(dataframe, column):
+def encoder(dataframe):
     label_encoder = preprocessing.LabelEncoder()
-    dataframe[column]= label_encoder.fit_transform(dataframe[column])
+    for (columnName, columnData) in dataframe.iteritems():
+        if columnData.dtypes == "object":
+            # print(dataframe[columnName].dtypes)
+            dataframe[columnName] = label_encoder.fit_transform(dataframe[columnName])
+    return dataframe
+    # dataframe[column]= label_encoder.fit_transform(dataframe[column])
     # print(dataframe[column].value_counts())
 
-encoder(df_previous_application_2, "ad_name_contract_status_ct")
+# print(df_previous_application_2["ad_name_contract_status_ct"].dtypes)
+df_previous_application_2 = encoder(df_previous_application_2)
+df_application_data_2 = encoder(df_application_data_2)
+# print(df_previous_application_2.dtypes)
 
 # Feature Selection - Correleation Coefficient
 def corr_co(name, dataframe, thresh, plot_visibility):
-    print("\nThis is correlation coefficient function for "+name)
+    # print("\nThis is correlation coefficient function for "+name)
     corr_matrix = dataframe.corr()
     if (plot_visibility):
         sns.heatmap(corr_matrix,annot=True,cmap=plt.cm.CMRmap_r)
@@ -137,19 +154,38 @@ def corr_co(name, dataframe, thresh, plot_visibility):
                 colname = corr_matrix.columns[i]
                 coll_corr.append(colname)
                 # print(colname)
-    print("Original Dataframe shape:")
-    print(dataframe.shape)
-    print("\nCorrelation Matrix shape:\n")
+    # print("Original Dataframe:")
+    # print(dataframe["ad_name_contract_type_ct"])
+    # print(dataframe["ad_education_type_ct"])
+    # print("\nCorrelation Matrix:\n")
     # dropping all NA columns and rows
     # corr_matrix = corr_matrix.dropna(how ='all')
     # corr_matrix = corr_matrix.dropna(how ='all', axis = "columns")
-    print(corr_matrix.shape)
+    # print(corr_matrix.dtypes)
+    return corr_matrix
 
 # calling correlation coefficient function
-corr_co("previous_application.csv", df_previous_application_2, 0.85, False)
-corr_co("current_application", df_application_data_2, 0.85, False)
+corr_matrix_previous_application = corr_co("previous_application.csv", df_previous_application_2, 0.85, False)
+corr_matrix_application_data = corr_co("current_application", df_application_data_2, 0.85, False)
+
+# print("\nprevious application\n")
+# print(corr_matrix_previous_application.dtypes)
+# print(corr_matrix_previous_application.shape)
+
+# print("\napplication data\n")
+# print(corr_matrix_application_data.dtypes)
+# print(corr_matrix_application_data.shape)
+
+# if 'ad_target_ct' in corr_matrix_application_data.columns:
+#     print("YES")
+# else:
+#     print("NO")
 
 # Pearson method correlation
 # df_corr = df_previous_application_2.corr(method ='pearson')
 # print(df_corr)
 
+# merge
+# merge both the dataframe on SK_ID_CURR with Inner Joins
+merged_dataframe = pd.merge(corr_matrix_application_data, corr_matrix_previous_application, how='inner', on='ad_sk_id_curr_ct')
+print(merged_dataframe.head())

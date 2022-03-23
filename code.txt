@@ -151,4 +151,3 @@ corr_co("current_application", df_application_data_2, 0.85, False)
 # Pearson method correlation
 # df_corr = df_previous_application_2.corr(method ='pearson')
 # print(df_corr)
-
