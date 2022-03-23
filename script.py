@@ -185,6 +185,8 @@ corr_matrix_application_data = corr_co("current_application", df_application_dat
 # merge
 # merge both the dataframe on SK_ID_CURR with Inner Joins
 merged_dataframe = pd.merge(df_application_data_2, df_previous_application_2, how='inner', on='ad_sk_id_curr_ct')
+merged_dataframe.to_csv('raktim_cleaned_data_set_23_03_2022.csv')
+print("to csv done!")
 # print("\nmerged data:\n")
 # print(merged_dataframe.head())
 
