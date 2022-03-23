@@ -120,7 +120,7 @@ encoder(df_previous_application_2, "ad_name_contract_status_ct")
 
 # Feature Selection - Correleation Coefficient
 def corr_co(name, dataframe, thresh, plot_visibility):
-    print("\nThis is correlation coeeficient function for "+name)
+    print("\nThis is correlation coefficient function for "+name)
     corr_matrix = dataframe.corr()
     if (plot_visibility):
         sns.heatmap(corr_matrix,annot=True,cmap=plt.cm.CMRmap_r)
@@ -140,6 +140,7 @@ def corr_co(name, dataframe, thresh, plot_visibility):
     # print("Original Dataframe:")
     # print(dataframe)
     print("\nCorrelation Matrix:\n")
+    # dropping all NA columns and rows
     corr_matrix = corr_matrix.dropna(how ='all')
     corr_matrix = corr_matrix.dropna(how ='all', axis = "columns")
     print(corr_matrix)
