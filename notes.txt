@@ -1,4 +1,27 @@
-Shapiro test:
+0. Shapiro test:
 
-Outlier:
-value_count()
+1. Outlier:
+
+2. pd.cut() , value_count()
+
+previous_application["AGE"] = abs(previous_application["DAYS_BIRTH"])/365
+bins = [0,20,25,30,35,40,45,50,55,60,100]
+slots = ["0-20","20-25","25-30","30-35","35-40","40-45","45-50","50-55","55-60","60 Above"]
+
+
+
+previous_application["AGE_GROUP"] = pd.cut(previous_application["AGE"], bins=bins, labels=slots)
+
+
+3. Variance threshold - how much deviation from mean
+4. Encoding - LabelEncoder() fit_transform
+# Import label encoder
+from sklearn import preprocessing
+# label_encoder object knows how to understand word labels.
+label_encoder = preprocessing.LabelEncoder()
+# Encode labels in column 'Country'.
+df['NAME_INCOME_TYPE']= label_encoder.fit_transform(df['NAME_INCOME_TYPE'])
+df['NAME_INCOME_TYPE'].value_counts()
+
+5. Correlation method
+ad_name_contract_status_ct
