@@ -129,21 +129,21 @@ def corr_co(name, dataframe, thresh, plot_visibility):
     coll_corr = []
     threshold = thresh
 
-    print("\nColumn names:\n")
+    # print("\nColumn names:\n")
 
     for i in range(len(corr_matrix.columns)):
         for j in range(i):
             if abs(corr_matrix.iloc[i,j]) > threshold:
                 colname = corr_matrix.columns[i]
                 coll_corr.append(colname)
-                print(colname)
-    # print("Original Dataframe:")
-    # print(dataframe)
-    print("\nCorrelation Matrix:\n")
+                # print(colname)
+    print("Original Dataframe shape:")
+    print(dataframe.shape)
+    print("\nCorrelation Matrix shape:\n")
     # dropping all NA columns and rows
-    corr_matrix = corr_matrix.dropna(how ='all')
-    corr_matrix = corr_matrix.dropna(how ='all', axis = "columns")
-    print(corr_matrix)
+    # corr_matrix = corr_matrix.dropna(how ='all')
+    # corr_matrix = corr_matrix.dropna(how ='all', axis = "columns")
+    print(corr_matrix.shape)
 
 # calling correlation coefficient function
 corr_co("previous_application.csv", df_previous_application_2, 0.85, False)
