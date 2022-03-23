@@ -5,9 +5,9 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Code/deloitee-training-project-1/datasets/application_data.csv")
+data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Code/deloitte-training-project-1/datasets/application_data.csv")
 df_application_data = pd.DataFrame(data)
-data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Code/deloitee-training-project-1/datasets/previous_application.csv")
+data = pd.read_csv("C:/Users/rakray/Documents/Deloitte_Training/Code/deloitte-training-project-1/datasets/previous_application.csv")
 df_previous_application = pd.DataFrame(data)
 
 print("Shape Original - previous_application.csv")
