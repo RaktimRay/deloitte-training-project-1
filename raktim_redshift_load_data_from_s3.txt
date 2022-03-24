@@ -1,0 +1,8 @@
+COPY raktim_table 
+from 's3://deloitte-case-study-1-raktim-ray/day-4/raktim-cleaned-data-24-03-2022.csv'
+iam_role 'arn:aws:iam::007507930313:role/raktim-s3-to-redshift-read-only'
+delimiter ','
+removequotes
+emptyasnull
+blanksasnull
+maxerror 5;
