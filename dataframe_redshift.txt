@@ -1,0 +1,12 @@
+print("careate table sample (")
+for i in application_data.columns:
+datatype = application_data[i].dtypes
+output = ""
+if datatype == 'int64':
+output = 'int'
+elif datatype == 'float64':
+output = 'float'
+else:
+output = 'varchar(100)'
+print(i,output,",")
+print(")")
